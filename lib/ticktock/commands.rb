@@ -33,6 +33,7 @@ module Commands
       seconds = 0
 
       category_times.each do |time|
+        next if time[:end_at].nil?
         seconds += time[:end_at] - time[:start_at]
       end
 
@@ -42,7 +43,7 @@ module Commands
       result_string << "\t#{category[:name]}: #{hours} hrs. (#{seconds} sec)\n"
     end
 
-    return result_string
+    puts result_string
     # do stuff
   end
 

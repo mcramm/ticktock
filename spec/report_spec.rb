@@ -15,9 +15,7 @@ describe "reporting" do
     @tt.should.respond_to "report"
   end
 
-  it "should return a paragraph explaining your times" do
-    report = @tt.report
-
+  it "should return a paragraph explaining your times, and it shouldn't run on unnended times" do
     expected_report = "Here is a quick summary for all of your logged times:\n\n"
 
     expected_report << "\tmisc: 1.3 hrs. (4700 sec)\n"
@@ -25,8 +23,10 @@ describe "reporting" do
     expected_report << "\teating: 0.5 hrs. (1800 sec)\n"
     expected_report << "\tsleeping: 2.9 hrs. (10600 sec)\n"
 
-    report.should == expected_report
+    report = capture_stdout do
+      @tt.report
+    end
+
+    report.string.should == expected_report
   end
-
 end
-

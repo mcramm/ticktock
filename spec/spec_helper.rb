@@ -1,3 +1,4 @@
+require 'stringio'
 require 'rubygems'
 require 'bundler'
 begin
@@ -41,6 +42,7 @@ def create_test_data
     {:start_at => 8400, :end_at => 9200, :category_id => 3},
     {:start_at => 9200, :end_at => 10800, :category_id => 1},
     {:start_at => 10800, :end_at => 20000, :category_id => 4},
+    {:start_at => 20000, :end_at => nil, :category_id => 4}
   ].each do |time|
     @db[:times].insert(
       :category_id => time[:category_id],
@@ -50,3 +52,13 @@ def create_test_data
   end
 end
 
+module Kernel
+  def capture_stdout
+    out = StringIO.new
+    $stdout = out
+    yield
+    return out
+  ensure
+    $stdout = STDOUT
+  end
+end
