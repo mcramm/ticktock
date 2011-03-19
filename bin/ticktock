@@ -4,4 +4,10 @@ require 'rubygems'
 require 'ticktock'
 
 tt = TickTock.new
-tt.tick
+command = ARGV.shift
+
+if ARGV.size > 0
+  tt.perform command, ARGV.join(", ")
+else
+  tt.perform command
+end
