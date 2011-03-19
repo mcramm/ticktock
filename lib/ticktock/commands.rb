@@ -1,6 +1,9 @@
 module Commands
-  def tick
-    # Do stuff here
+  def tick(name = 'misc')
+    category = get_category name
+    category = create_category(name) if category.nil?
+
+    @db[:times].insert(:start_at => Time.now.to_i, :category_id => category[:id])
   end
 
   def install
@@ -30,6 +33,20 @@ module Commands
       DateTime :end_at
     end
 
-    @db[:categories].insert(:name => 'misc')
+    create_category
+  end
+
+  def create_category(name = 'misc')
+    @db[:categories].insert(:name => name)
+
+    get_category name
+  end
+
+  def get_category(name = 'misc')
+    @db[:categories].where(:name => name).first
+  end
+
+  def connect_to_db
+    Sequel.sqlite "#{DB_DIR}/#{DB_NAME}.db"
   end
 end

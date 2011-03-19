@@ -10,7 +10,7 @@ class TickTock
   include Commands
 
   def initialize
-    @db = Sequel.sqlite "#{DB_DIR}/#{DB_NAME}.db"
+    @db ||= connect_to_db
 
     install unless File.exists?(DB_DIR) && !@db.nil?
   end
@@ -20,11 +20,11 @@ class TickTock
     self.send command ARGV
   end
 
-  def method_missing(method, *args, &block)
-    if self.respond_to?(method)
-      self.send method, args, block
-    else
-      raise "#{methond} was not found. Use --help for more information."
-    end
-  end
+  #def method_missing(method, *args, &block)
+    #if self.respond_to?(method)
+      #self.send method, args, block
+    #else
+      #raise "#{methond} was not found. Use --help for more information."
+    #end
+  #end
 end

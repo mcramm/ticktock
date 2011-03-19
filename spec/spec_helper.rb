@@ -20,3 +20,7 @@ require 'ticktock'
 
 Bacon.summary_on_exit
 
+def connect_to_db
+  Sequel.sqlite "#{DB_DIR}/#{DB_NAME}.db"
+end
+
