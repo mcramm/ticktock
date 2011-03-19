@@ -6,6 +6,23 @@ module Commands
     @db[:times].insert(:start_at => Time.now.to_i, :category_id => category[:id])
   end
 
+  def tock(name = nil)
+    times = @db[:times].where(:end_at => nil)
+
+    unless name.nil?
+      category_id = @db[:categories].where(:name => name).first[:id]
+      times = times.where(:category_id => category_id)
+    end
+
+    unended_times = times.order(:id).all
+
+    if unended_times.size == 0
+      name.nil? ? tick : tick(name)
+    else
+      times.where(:id => unended_times.last[:id]).update(:end_at => Time.now.to_i)
+    end
+  end
+
   def install
     create_directory unless File.exists? DB_DIR
     create_db unless File.exists? "#{DB_DIR}/#{DB_NAME}.db"

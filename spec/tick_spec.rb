@@ -6,7 +6,11 @@ describe "tick" do
     @db = connect_to_db
   end
 
-  it "respond to tick" do
+  after do
+    FileUtils.rm_rf DB_DIR
+  end
+
+  it "should respond to tick" do
     @tt.should.respond_to('tick')
   end
 
@@ -29,7 +33,10 @@ describe "tick" do
     start_time.should >= now
     start_time.should < now + 10
   end
+
   it "end time should be null" do
+    @tt.tick
+
     end_time = @db[:times].order(:id).last[:end_at]
     end_time.should === nil
   end
