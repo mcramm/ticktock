@@ -1,0 +1,7 @@
+# /usr/bin/env ruby
+
+require 'rubygems'
+require 'ticktock'
+
+tt = TickTock.new
+tt.tick

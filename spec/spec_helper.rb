@@ -8,9 +8,15 @@ rescue Bundler::BundlerError => e
   exit e.status_code
 end
 require 'bacon'
+require 'sequel'
 
 $LOAD_PATH.unshift(File.dirname(__FILE__))
 $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
+
+DB_DIR = "#{ENV['HOME']}/.test_ticktock"
+DB_NAME = "test_ticktock"
+
 require 'ticktock'
 
 Bacon.summary_on_exit
+
