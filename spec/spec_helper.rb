@@ -24,3 +24,29 @@ def connect_to_db
   Sequel.sqlite "#{DB_DIR}/#{DB_NAME}.db"
 end
 
+def create_test_data
+  %w(coding eating sleeping).each do |category|
+    @db[:categories].insert(:name => category)
+  end
+
+  [
+    {:start_at => 0, :end_at => 600, :category_id => 1},
+    {:start_at => 600, :end_at => 1000, :category_id => 2},
+    {:start_at => 1000, :end_at => 2000, :category_id => 3},
+    {:start_at => 2000, :end_at => 4000, :category_id => 2},
+    {:start_at => 4000, :end_at => 4500, :category_id => 2},
+    {:start_at => 4500, :end_at => 7000, :category_id => 1},
+    {:start_at => 7000, :end_at => 7600, :category_id => 4},
+    {:start_at => 7600, :end_at => 8400, :category_id => 4},
+    {:start_at => 8400, :end_at => 9200, :category_id => 3},
+    {:start_at => 9200, :end_at => 10800, :category_id => 1},
+    {:start_at => 10800, :end_at => 20000, :category_id => 4},
+  ].each do |time|
+    @db[:times].insert(
+      :category_id => time[:category_id],
+      :start_at => time[:start_at],
+      :end_at => time[:end_at]
+    )
+  end
+end
+

@@ -23,6 +23,29 @@ module Commands
     end
   end
 
+  def report
+    categories = @db[:categories].order(:id).all
+    result_string = "Here is a quick summary for all of your logged times:\n\n"
+
+    results = Hash.new
+    categories.each do |category|
+      category_times = @db[:times].where(:category_id => category[:id]).all
+      seconds = 0
+
+      category_times.each do |time|
+        seconds += time[:end_at] - time[:start_at]
+      end
+
+      hours = sprintf("%.1f", (seconds.to_f/3600.to_f))
+
+      results[category[:name]] = {:hours => hours, :seconds => seconds}
+      result_string << "\t#{category[:name]}: #{hours} hrs. (#{seconds} sec)\n"
+    end
+
+    return result_string
+    # do stuff
+  end
+
   def install
     create_directory unless File.exists? DB_DIR
     create_db unless File.exists? "#{DB_DIR}/#{DB_NAME}.db"
